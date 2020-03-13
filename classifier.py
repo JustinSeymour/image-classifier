@@ -84,16 +84,14 @@ def validate_model(model, test_loader, device):
 def train(model, training_loader, testing_loader, device, 
                   criterion, optimizer, epochs, print_every, steps):
   
- 
     print("Model beginning training .....\n")
 
     running_loss = 0
     steps = 0
-    
-    # Train Model
+
     for e in range(epochs):
         
-        model.train() # Technically not necessary, setting this for good measure
+        model.train() 
         
         for inputs, labels in training_loader:
             steps += 1
