@@ -1,0 +1,4 @@
+Number of input features for model: 25088
+Device: cpu
+Model beginning training .....
+
