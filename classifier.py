@@ -81,7 +81,7 @@ def validate_model(model, test_loader, device):
     
     print('Accuracy of network based on test images is: %d%%' % (100 * correct / total))
 
-def train(model, training_loader, testing_loader, device, 
+def train(model, training_loader, validation_loader, device, 
                   criterion, optimizer, epochs, print_every, steps):
   
     print("Model beginning training .....\n")
@@ -112,12 +112,12 @@ def train(model, training_loader, testing_loader, device,
                 model.eval()
 
                 with torch.no_grad():
-                    test_loss, accuracy = validate(model, testing_loader, criterion, device)
+                    test_loss, accuracy = validate(model, validation_loader, criterion, device)
             
                 print("Epoch number: {}/{} | ".format(e+1, epochs),
                      "Training Loss: {:.3f} | ".format(running_loss/print_every),
-                     "Test Loss: {:.3f} | ".format(test_loss/len(testing_loader)),
-                     "Test Accuracy: {:.3f}".format(accuracy/len(testing_loader)))
+                     "Test Loss: {:.3f} | ".format(test_loss/len(validation_loader)),
+                     "Test Accuracy: {:.3f}".format(accuracy/len(validation_loader)))
             
                 running_loss = 0
                 model.train()
