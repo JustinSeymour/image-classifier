@@ -52,8 +52,8 @@ def image_datasets(dt):
 def data_loaders(image_datasets, batch_size): 
 
    data_loaders = {
-    'training': torch.utils.data.DataLoader(image_datasets['training'], batch_size=batch_size),
-    'validation': torch.utils.data.DataLoader(image_datasets['validation'], batch_size=batch_size),
+    'training': torch.utils.data.DataLoader(image_datasets['training'], batch_size=batch_size, shuffle=True),
+    'validation': torch.utils.data.DataLoader(image_datasets['validation'], batch_size=batch_size, shuffle=True),
     'testing': torch.utils.data.DataLoader(image_datasets['testing'], batch_size=batch_size)
    }  
 

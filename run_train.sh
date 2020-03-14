@@ -29,7 +29,6 @@ echo "Dropout rate: 	| $DROPOUT"
 echo "Print every:  	| $PRINT_EVERY\n\n"
 
 
-
 echo "Training has started...\n\n*** All output will be logged in the folder training_logs under $FILENAME. \n    When the model is complete, output will be sent to this console to notify you.***\n\n"
 
 python3 train.py --arch=${ARCH} --hidden_layers=${HIDDEN_LAYERS} --epochs=${EPOCHS} --learning_rate=${LEARNING_RATE} --checkpoint_dir=${CHECKPOINT_DIR} --output=${OUTPUT} --dropout=${DROPOUT} --print_every=${PRINT_EVERY} > training_logs/$FILENAME
