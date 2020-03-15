@@ -36,13 +36,9 @@ def create_model(arch):
    return model
 
 def check_gpu(gpu_arg):
-   # If gpu_arg is false then simply return the cpu device
-    if not gpu_arg:
-        return torch.device("cpu")
     
-    # If gpu_arg then make sure to check for CUDA before assigning it
-    device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
-    
+    device = torch.device("cuda:0" if torch.cuda.is_available() and gpu_arg else "cpu")
+
     # Print result
     if device == "cpu":
         print("CUDA was not found on device, using CPU instead.")
@@ -65,7 +61,7 @@ def create_classifier(model, hidden_units, output_units, dropout):
    return classifier
 
 
-def validate_model(model, test_loader, device):
+def test_model(model, test_loader, device):
    # Do validation on the test set
     correct = 0
     total = 0
@@ -95,7 +91,6 @@ def train(model, training_loader, validation_loader, device,
         
         for inputs, labels in training_loader:
             steps += 1
-            
             inputs, labels = inputs.to(device), labels.to(device)
             
             optimizer.zero_grad()
@@ -112,12 +107,12 @@ def train(model, training_loader, validation_loader, device,
                 model.eval()
 
                 with torch.no_grad():
-                    test_loss, accuracy = validate(model, validation_loader, criterion, device)
+                    valid_loss, accuracy = validate(model, validation_loader, criterion, device)
             
                 print("Epoch number: {}/{} | ".format(e+1, epochs),
                      "Training Loss: {:.3f} | ".format(running_loss/print_every),
-                     "Test Loss: {:.3f} | ".format(test_loss/len(validation_loader)),
-                     "Test Accuracy: {:.3f}".format(accuracy/len(validation_loader)))
+                     "Validation Loss: {:.3f} | ".format(valid_loss/len(validation_loader)),
+                     "Validation Accuracy: {:.3f}".format(accuracy/len(validation_loader)))
             
                 running_loss = 0
                 model.train()
@@ -125,19 +120,19 @@ def train(model, training_loader, validation_loader, device,
      
     return model
 
-def validate(model, testing_loader, criterion, device):
-    test_loss = 0
+def validate(model, validation_loader, criterion, device):
+    loss = 0
     accuracy = 0
     
-    for inputs, labels in testing_loader:
+    for inputs, labels in validation_loader:
         
         inputs, labels = inputs.to(device), labels.to(device)
         
         output = model.forward(inputs)
-        test_loss += criterion(output, labels).item()
+        loss += criterion(output, labels).item()
         
         ps = torch.exp(output)
         equality = (labels.data == ps.max(1)[1])
         accuracy += equality.type(torch.FloatTensor).mean()
 
-    return test_loss, accuracy
+    return loss, accuracy

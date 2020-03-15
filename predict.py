@@ -23,7 +23,7 @@ def main():
     
     image_tensor = process_image(args.image)
     
-    top_probs, top_labels, top_flowers = predict(image_tensor, model, 5, cat_to_name, 'gpu')
+    top_probs, top_labels, top_flowers = predict(image_tensor, model, 5, cat_to_name)
     
     print(top_probs)
     

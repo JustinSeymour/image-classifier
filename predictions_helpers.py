@@ -30,7 +30,7 @@ def process_image(image_path):
     return img_tensor
 
 
-def predict(image_tensor, model, topk, cat_to_name, device):
+def predict(image_tensor, model, topk, cat_to_name):
     ''' Predict the class (or classes) of an image using a trained deep learning model.
     '''
     
@@ -56,3 +56,4 @@ def predict(image_tensor, model, topk, cat_to_name, device):
     top_flowers = [cat_to_name[str(lab)] for lab in top_labels]
     
     return top_probs, top_labels, top_flowers
+

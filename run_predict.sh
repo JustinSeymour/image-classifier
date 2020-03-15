@@ -12,6 +12,6 @@ FILENAME='prediction-log-'$DATE_WITH_TIME'.txt'
 
 echo "Network is running prediction..."
 
-python predict.py --image=$IMAGE --checkpoint_path=$CHECKPOINT_PATH --category_names=$CATEGORY_NAMES > prediction_logs/$FILENAME
+python predict.py $IMAGE $CHECKPOINT_PATH --category_names=$CATEGORY_NAMES > prediction_logs/$FILENAME
 
 echo "Check the results in the prediction_logs folder under the file called: $FILENAME"

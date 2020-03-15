@@ -13,13 +13,15 @@ from torch import optim
 from torchvision import datasets, transforms, models
 from get_input_args import arg_parser
 from data_preparation import create_transforms, image_datasets, data_loaders
-from classifier import create_model, create_classifier, check_gpu, train, validate_model, validate
+from classifier import create_model, create_classifier, check_gpu, train, test_model, validate
 from checkpoint import initial_checkpoint
 
 def main():
 
    # Instantiate the console arguments function
    args = arg_parser()
+    
+   print("GPU setting: {}".format(args.gpu))
 
    # Define normalization for transforms
    normalize = transforms.Normalize(
@@ -39,10 +41,13 @@ def main():
    # Instantiate a new model
    model = create_model(arch=args.arch)
 
-   # Create new classifier
-   model.classifier = create_classifier(model, args.hidden_layers, args.output, args.dropout)
+   output_units = len(datasets['training'].classes)
 
-   device = check_gpu("gpu")
+   # Create new classifier
+   model.classifier = create_classifier(model, args.hidden_layers, output_units, args.dropout)
+
+   device = check_gpu(args.gpu)
+   print(device)
    model.to(device)
 
    learning_rate = args.learning_rate
@@ -59,7 +64,7 @@ def main():
 
    print("Training has completed")
    
-   validate_model(trained_model, loaders['testing'], device)
+   test_model(trained_model, loaders['testing'], device)
 
    initial_checkpoint(trained_model, args.checkpoint_dir, datasets['training'])
 

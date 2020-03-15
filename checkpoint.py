@@ -31,7 +31,6 @@ def initial_checkpoint(model, directory, training_data):
 
 def reload_checkpoint(path):
 
-    print("Path to checkpoint: {}".format(path))
     checkpoint = torch.load(path)
     
     # Load Defaults if none specified
